@@ -2,6 +2,16 @@
 
 A personal library of reusable AI prompt templates and agent specs. Nothing here is executable on its own — these are reference documents meant to be pasted into a chat AI, a coding agent's system prompt, or an agent framework's config.
 
+## Automatic selection
+
+This repo is set up so most AI coding tools can find the right prompt or agent on their own instead of you having to hunt for it:
+
+- [SKILL.md](SKILL.md) is the router — a table matching task descriptions to the specific file that covers them, plus per-tool instructions on how to apply a match.
+- [AGENTS.md](AGENTS.md) is the always-loaded entry point (the emerging cross-tool convention, read natively by Codex and others) that tells any assistant to check the router first.
+- [CLAUDE.md](CLAUDE.md) and [.github/copilot-instructions.md](.github/copilot-instructions.md) are short pointers to `AGENTS.md`, so Claude Code and GitHub Copilot pick up the same routing without duplicating it.
+
+If your tool doesn't auto-load any of those, just open `SKILL.md` yourself and pick the matching row.
+
 ## Layout
 
 - `prompts/` — standalone prompt templates. Each one defines a narrow-purpose "transformer" AI that reads some input (a conversation, a codebase, a diff) and emits a structured, machine-readable output (almost always JSON) for consumption by another AI or agent.
@@ -32,8 +42,8 @@ The prompts form a loose pipeline around two axes: **archival** (compressing a s
 
    bug report / repro chat ──► bug-report-to-plan ──► fix plan ──► coding agent
 
-   diff / PR branch ──► code-review-brief ──► structured findings ──► reviewer or coding agent
-   diff / PR branch ──► pr-description ──► PR title + body
+   diff / PR branch ──► diff-to-review-brief ──► structured findings ──► reviewer or coding agent
+   diff / PR branch ──► diff-to-pr-description ──► PR title + body
 ```
 
 All archival/planning prompts share the same shape:
