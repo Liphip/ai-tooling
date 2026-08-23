@@ -2,6 +2,40 @@
 
 A personal library of reusable AI prompt templates and agent specs. Nothing here is executable on its own — these are reference documents meant to be pasted into a chat AI, a coding agent's system prompt, or an agent framework's config.
 
+## Usage
+
+How to point each tool at this repo, and how to invoke a specific prompt or agent once it's wired up.
+
+### Claude Code
+
+- Clone or symlink this repo somewhere Claude Code can read it (e.g. alongside your project, or reference it by absolute path).
+- Auto-routing: if `CLAUDE.md` from this repo is reachable in context (e.g. you're working inside this repo, or you `@`-reference it), Claude Code will pick it up and follow the pointer to [SKILL.md](SKILL.md) to route your task to the right file.
+- Manual invocation: ask directly, e.g. "Using `agents/code-reviewer.agent.md` from ai-tooling, review this diff" or paste a `prompts/*.prompt.md` file's contents as your first message followed by the input to transform.
+- To make a prompt reusable as a slash command in a specific project, copy or symlink it into that project's `.claude/commands/` (Claude Code treats any Markdown file there as a `/command`).
+
+### Codex (CLI / cloud)
+
+- Codex reads `AGENTS.md` automatically from the repo root (and from parent directories) as standing instructions — this repo's [AGENTS.md](AGENTS.md) already points to the router.
+- Working inside this repo, or with it merged/vendored into a project, is enough for auto-routing: Codex will check [SKILL.md](SKILL.md) before starting a task that matches one of its rows.
+- Manual invocation: reference the file path directly, e.g. "follow `prompts/bug-report-to-plan.prompt.md` using the conversation above as input."
+
+### GitHub Copilot (VS Code)
+
+- Copilot auto-loads [.github/copilot-instructions.md](.github/copilot-instructions.md) from the repo root, which points to the router.
+- `agents/*.agent.md` and `prompts/*.prompt.md` use Copilot's own recognized file suffixes, so they're pickable from the Copilot Chat prompt/agent file pickers directly, or via `#file:agents/code-reviewer.agent.md` / `#file:prompts/plan-to-tasks.prompt.md` in chat — no copying needed if this repo (or its `prompts`/`agents` folders) is open in the workspace.
+- For a prompt or agent to show up as a suggested/reusable prompt file in a specific project's Copilot UI, copy or symlink it into that project's `.github/prompts/` folder.
+
+### Cursor
+
+- Cursor doesn't read `AGENTS.md` or `SKILL.md` natively yet, so routing there is manual: open or `@`-reference the specific `prompts/*.prompt.md` or `agents/*.agent.md` file in chat, or paste its contents in as context.
+- For standing, always-on guidance in a specific project, copy the relevant agent/prompt content into that project's `.cursor/rules/` as an `.mdc` rule file.
+- If you want Cursor to route on its own, point it at [SKILL.md](SKILL.md) explicitly at the start of a session ("use the routing table in SKILL.md to pick the right file for what I ask") — Cursor will follow it as regular instructions for the rest of the session.
+
+### Any other tool (ChatGPT, Gemini CLI, custom agents, etc.)
+
+- There's no file here to run — everything is plain Markdown meant to be read by a human or pasted into a system/first message.
+- Open [SKILL.md](SKILL.md), find the row matching your task, open that file, and paste its contents in as the system prompt (for `prompts/`) or operating instructions (for `agents/`), followed by your actual input.
+
 ## Automatic selection
 
 This repo is set up so most AI coding tools can find the right prompt or agent on their own instead of you having to hunt for it:
